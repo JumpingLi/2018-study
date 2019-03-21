@@ -1,0 +1,50 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.0.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.shein'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+test.enabled = false
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    // https://mvnrepository.com/artifact/com.alibaba/QLExpress
+    compile group: 'com.alibaba', name: 'QLExpress', version: '3.2.0'
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    compile group: 'com.google.guava', name: 'guava', version: '18.0'
+    // https://mvnrepository.com/artifact/com.dangdang/elastic-job-lite-spring
+    compile group: 'com.dangdang', name: 'elastic-job-lite-spring', version: '2.1.5'
+    // https://mvnrepository.com/artifact/com.dangdang/elastic-job-lite-core
+    compile group: 'com.dangdang', name: 'elastic-job-lite-core', version: '2.1.5'
+    // https://mvnrepository.com/artifact/com.dangdang/elastic-job-lite-lifecycle
+    compile group: 'com.dangdang', name: 'elastic-job-lite-lifecycle', version: '2.1.5'
+
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.18.0'
+    //
+//    compile group: 'com.github.kuhn-he',name:'elastic-job-lite-spring-boot-starter',version:'2.1.5'
+
+
+
+}
