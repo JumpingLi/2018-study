@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Jumping.Li
  * @date 2018-12-04 15:41
  */
-@Configuration
+//@Configuration
 public class RegistryCenterConfig {
     @Value("${elaticjob.zookeeper.server-lists}")
     private String serverList;

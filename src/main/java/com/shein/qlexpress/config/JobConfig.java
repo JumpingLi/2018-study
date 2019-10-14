@@ -23,7 +23,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author Jumping.Li
  * @date 2018-12-04 17:11
  */
-@Configuration
+//@Configuration
 public class JobConfig {
 
     @Value("${elastic-job.sharding.total.count:2}")

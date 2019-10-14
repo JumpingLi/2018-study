@@ -16,7 +16,7 @@ import javax.annotation.Resource;
  * @author Jumping.Li
  * @date 2018-12-05 13:32
  */
-@RestController
+//@RestController
 public class TestController {
     @Resource
     private JobConfig elasticJobConfig;

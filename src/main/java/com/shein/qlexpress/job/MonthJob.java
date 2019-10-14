@@ -13,7 +13,7 @@ import javax.annotation.Resource;
  * @date 2018-12-04 17:02
  */
 //@ElasticSimpleJob(cron = "0/5 * * * * ?", jobName = "test123", shardingTotalCount = 2, jobParameter = "测试参数", shardingItemParameters = "0=A,1=B")
-@Component(value = "monthJob")
+//@Component(value = "monthJob")
 @Slf4j
 public class MonthJob implements SimpleJob {
 

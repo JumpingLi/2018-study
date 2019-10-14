@@ -45,6 +45,6 @@ dependencies {
     //
 //    compile group: 'com.github.kuhn-he',name:'elastic-job-lite-spring-boot-starter',version:'2.1.5'
 
-
+    compile fileTree(dir:'libs',include:['*.jar'])
 
 }

@@ -17,7 +17,7 @@ import java.util.concurrent.Executor;
  * @date 2018-12-04 17:02
  */
 //@ElasticSimpleJob(cron = "0/5 * * * * ?", jobName = "test123", shardingTotalCount = 2, jobParameter = "测试参数", shardingItemParameters = "0=A,1=B")
-@Component(value = "quarterJob")
+//@Component(value = "quarterJob")
 @Slf4j
 public class QuarterJob implements SimpleJob {
 

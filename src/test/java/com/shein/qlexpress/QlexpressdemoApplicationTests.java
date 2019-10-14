@@ -1,5 +1,10 @@
 package com.shein.qlexpress;
 
+import com.csvreader.CsvReader;
+import com.csvreader.CsvWriter;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.ql.util.express.DefaultContext;
 import com.ql.util.express.ExpressRunner;
 import com.ql.util.express.IExpressContext;
@@ -8,6 +13,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -137,5 +148,93 @@ public class QlexpressdemoApplicationTests {
         for (String s : names) {
             System.out.println("var : " + s);
         }
+    }
+
+    @Test
+    public void testCsv() throws IOException {
+        // 品类 - 需求类型 map
+        Map<String,String> categoryVsNeedsTypeMap = Maps.newHashMap();
+        //生成CsvReader对象，以，为分隔符，GBK编码方式
+        CsvReader r = new CsvReader("D://needsType.csv", ',', Charset.forName("UTF-8"));
+        r.readHeaders();
+        //逐条读取记录，直至读完
+        while (r.readRecord()) {
+            String category = r.get("category").trim();
+            String needsType = r.get("needsType").trim();
+            categoryVsNeedsTypeMap.put(category,needsType);
+        }
+        r.close();
+
+        //
+
+        CsvReader r1 = new CsvReader("D://id_category.csv", ',', Charset.forName("UTF-8"));
+        r1.readHeaders();
+        //逐条读取记录，直至读完
+        while (r1.readRecord()) {
+            String category = r1.get("category_name").trim();
+            String id = r1.get("id").trim();
+            String needsType = categoryVsNeedsTypeMap.get(category) == null ? "1" : categoryVsNeedsTypeMap.get(category);
+            String sqlFormat = "update srm_business_needs_detail set needs_type = %s where id = %s;";
+            String sql = String.format(sqlFormat,needsType,id);
+            System.out.println(sql);
+
+        }
+        r1.close();
+    }
+
+    @Test
+    public void buildSupplierPatten() throws IOException {
+        //生成CsvReader对象，以，为分隔符，GBK编码方式
+        CsvReader r = new CsvReader("D://1.csv", ',', Charset.forName("UTF-8"));
+        r.readHeaders();
+        Set<String> set1 = Sets.newHashSet();
+        Set<String> set2 = Sets.newHashSet();
+        //逐条读取记录，直至读完
+        while (r.readRecord()) {
+            String supplierId = r.get("id").trim();
+            set1.add(supplierId);
+        }
+        r.close();
+        //
+        CsvReader r1 = new CsvReader("D://2.csv", ',', Charset.forName("UTF-8"));
+        r1.readHeaders();
+        //逐条读取记录，直至读完
+        while (r1.readRecord()) {
+            String id = r1.get("supplier_id").trim();
+            set2.add(id);
+
+        }
+        r1.close();
+        //set1 排除 set2
+        System.out.println("set1 size :" + set1.size());
+        System.out.println("set2 size :" + set2.size());
+        set1.removeAll(set2);
+        System.out.println("set1 size :" + set1.size());
+        CsvWriter writer = new CsvWriter("D://3.sql");
+        writer.write("sql");
+        writer.endRecord();
+        for (String id : set1){
+            String sqlFormat = "--insert srm_supplier_patten(supplier_id,status,add_uid,add_time) VALUES(%s,2,'System',NOW());--";
+            String sql = String.format(sqlFormat,id);
+            writer.write(sql);
+            writer.endRecord();
+        }
+        writer.close();
+
+    }
+
+    @Test
+    public void build() throws IOException {
+        CsvReader r = new CsvReader("D://3.sql", ',', Charset.forName("UTF-8"));
+        r.readHeaders();
+        CsvWriter writer = new CsvWriter("D://4.sql");
+        while (r.readRecord()) {
+            String sql = r.get("sql").trim();
+            sql = sql.replaceAll("\"","--");
+            writer.write(sql);
+            writer.endRecord();
+        }
+        r.close();
+        writer.close();
     }
 }
